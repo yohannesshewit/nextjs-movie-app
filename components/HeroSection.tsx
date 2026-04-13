@@ -2,7 +2,7 @@
 
 import { Popcorn, Search } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 type Movie = {
@@ -17,30 +17,22 @@ export default function HeroSection({
   query: string;
 }) {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
+  // 🔑 input is ONLY controlled by user (no fighting with URL)
   const [input, setInput] = useState(query || "");
   const [debouncedQuery, setDebouncedQuery] = useState(query || "");
 
-  // sync input with URL
-
-  useEffect(() => {
-    if (query !== input) {
-      setInput(query || "");
-    }
-  }, [query]);
-
-  // debounce
+  // 🧠 debounce typing
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (input !== query) {
-        setDebouncedQuery(input);
-      }
-    }, 500);
+      setDebouncedQuery(input);
+    }, 400);
 
     return () => clearTimeout(timer);
-  }, [input, query]);
+  }, [input]);
 
-  // update URL
+  // 🚀 update URL smoothly (non-blocking)
   useEffect(() => {
     if (debouncedQuery === query) return;
 
@@ -51,16 +43,17 @@ export default function HeroSection({
       params.set("query", cleanQuery);
     }
 
-    router.replace(params.toString() ? `/?${params}` : "/");
+    startTransition(() => {
+      router.replace(params.toString() ? `/?${params}` : "/");
+    });
   }, [debouncedQuery, query, router]);
 
   return (
-    <div className={`h-[40vh] relative overflow-hidden `}>
-      <div className="absolute inset-0 flex flex-row justify-end p-7 z-10  "></div>
-      {/* 🎬 BACKGROUND IMAGES */}
+    <div className="h-[40vh] relative overflow-hidden">
+      {/* 🎬 BACKGROUND */}
       <div className="absolute inset-0 grid grid-cols-5 gap-1 opacity-50">
         {query && movies.length > 0
-          ? movies.map((movie, index) => (
+          ? movies.slice(0, 5).map((movie, index) => (
               <div key={index} className="relative">
                 <Image
                   src={
@@ -90,7 +83,7 @@ export default function HeroSection({
             ))}
       </div>
 
-      {/* 🔥 GRADIENT FADE (KEY PART) */}
+      {/* 🔥 GRADIENT */}
       <div className="absolute inset-0 bg-linear-to-b from-transparent via-black/40 to-black z-10" />
 
       {/* 🎯 CONTENT */}
@@ -113,7 +106,6 @@ export default function HeroSection({
             type="search"
             placeholder="Search movies..."
             value={input}
-            autoFocus
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -123,6 +115,11 @@ export default function HeroSection({
             className="bg-transparent w-full px-3 outline-none text-white"
           />
         </div>
+
+        {/* ⚡ optional loading indicator */}
+        {isPending && (
+          <p className="text-sm text-gray-300 mt-3">Searching...</p>
+        )}
       </div>
     </div>
   );
