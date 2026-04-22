@@ -40,7 +40,7 @@ export default function HeroSection({
     const cleanQuery = debouncedQuery.trim(); //remove or cut extra space both side
 
     if (cleanQuery) {
-      params.set("query", cleanQuery);  //set or update query parameter with out url update
+      params.set("query", cleanQuery);  //set or update query parameter by cleanQuery , with out url update
     }
 
     startTransition(() => {
