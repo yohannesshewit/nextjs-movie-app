@@ -9,9 +9,9 @@ async function getMovies(query: string) {
 
   
   const res = await fetch(url, { cache: "no-store" });  //Fresh data is fetched ,Makes search dynamic
-  const data = await res.json();
+  const data = await res.json(); //res is the response from fetch() then .json() reads the body and converts it into a JavaScript object
 
-  return data?.results ?? [];
+  return data?.results ?? []; //Give me the movie list if it exists, otherwise give me an empty list so nothing breaks or crash
 }
 
 export default async function Home({
@@ -22,7 +22,7 @@ export default async function Home({
   const params = await searchParams;  //searchParams is likely coming from props in Next.js (App Router).
   const query = params?.query || "";   //If params exists, get query. If not, return undefined."
 
-  const movies = await getMovies(query);
+  const movies = await getMovies(query); //blocks UI rendering until data is first ready
 
   return (
     <>
