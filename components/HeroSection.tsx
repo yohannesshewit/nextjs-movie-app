@@ -13,8 +13,8 @@ export default function HeroSection({
   movies,
   query,
 }: {
-  movies: Movie[];
-  query: string;
+  movies: Movie[];  //movies = food(what to show)   
+  query: string;    //query = order eason(why its show) (“I want burger”) to make our ui smart
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
