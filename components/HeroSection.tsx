@@ -20,7 +20,7 @@ export default function HeroSection({
   const [isPending, startTransition] = useTransition();
 
   // 🔑 input is ONLY controlled by user (no fighting with URL)
-  const [input, setInput] = useState(query || "");
+  const [input, setInput] = useState(query || ""); //query if it has a value, null or error or undefined use an empty string ""
   const [debouncedQuery, setDebouncedQuery] = useState(query || "");
 
   // 🧠 debounce typing
@@ -29,22 +29,22 @@ export default function HeroSection({
       setDebouncedQuery(input);
     }, 400);  //start timing 400ms when u stop typing
 
-    return () => clearTimeout(timer);  //clear400ms while start typing
+    return () => clearTimeout(timer);  //clear previous timing exist upto 400ms  while start typing
   }, [input]);
 
   // 🚀 update URL smoothly (non-blocking)
   useEffect(() => {
-    if (debouncedQuery === query) return;
+    if (debouncedQuery === query) return;  //Only update the URL if ( new input(debouncedQuery)!== current url(query)
 
-    const params = new URLSearchParams();
-    const cleanQuery = debouncedQuery.trim();
+    const params = new URLSearchParams(); //create new query string
+    const cleanQuery = debouncedQuery.trim(); //remove or cut extra space both side
 
     if (cleanQuery) {
-      params.set("query", cleanQuery);
+      params.set("query", cleanQuery);  //set or update query parameter with out url update
     }
 
     startTransition(() => {
-      router.replace(params.toString() ? `/?${params}` : "/");
+      router.replace(params.toString() ? `/?${params}` : "/");  //This converts your URLSearchParams into a real query string.and update the url with out reload page
     });
   }, [debouncedQuery, query, router]);
 
