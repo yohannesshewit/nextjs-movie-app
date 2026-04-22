@@ -29,7 +29,7 @@ export default function HeroSection({
       setDebouncedQuery(input);
     }, 400);
 
-    return () => clearTimeout(timer);
+    return () => clearTimeout(timer);  //clear400ms while start typing
   }, [input]);
 
   // 🚀 update URL smoothly (non-blocking)
