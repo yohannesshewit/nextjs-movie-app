@@ -27,7 +27,7 @@ export default function HeroSection({
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedQuery(input);
-    }, 400);
+    }, 400);  //start timing 400ms when u stop typing
 
     return () => clearTimeout(timer);  //clear400ms while start typing
   }, [input]);
