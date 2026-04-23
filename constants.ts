@@ -4,6 +4,13 @@ const IMAGE_PATH = "https://image.tmdb.org/t/p/w500";
 export { API_URL, IMAGE_PATH };
 
 
+// api.themoviedb.org =server
+// 3. =API version
+
+//t =image type system (TMDb internal path)
+//p =poster images
+//w500 =image size
+
 {/*
 u can use at component image section like this 
 
