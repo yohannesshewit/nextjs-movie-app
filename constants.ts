@@ -37,3 +37,13 @@ then write like this in component
 <Image src={getImageUrl(movie.poster_path)} />
 
 */}
+
+
+{/* step of fetch movie with genre
+
+Fetch Trending TV
+Get Genre List
+Fetch TV by Genre
+Fetch Movies
+
+*/}
